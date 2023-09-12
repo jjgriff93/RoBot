@@ -21,6 +21,7 @@ namespace Microsoft.Robots
             Help,
             TurnOn,
             TurnOff,
+            Help,
             None
         }
 

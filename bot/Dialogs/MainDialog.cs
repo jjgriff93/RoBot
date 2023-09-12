@@ -54,6 +54,36 @@ namespace Microsoft.Robots.Dialogs
             var cluResult = await _cluRecognizer.RecognizeAsync<RobotActions>(stepContext.Context, cancellationToken);
             switch (cluResult.GetTopIntent().intent)
             {
+                case RobotActions.Intent.TurnOn: // Turn on the robot
+                    await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text("Turning on...", null, InputHints.IgnoringInput),
+                        cancellationToken
+                    );
+
+                    // TODO: Call Robot API
+
+                    await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text("Powered on and ready.", null, InputHints.IgnoringInput),
+                        cancellationToken
+                    );
+
+                    break;
+                
+                case RobotActions.Intent.TurnOff: // Turn off the robot
+                    await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text("Turning off...", null, InputHints.IgnoringInput),
+                        cancellationToken
+                    );
+
+                    // TODO: Call Robot API
+
+                    await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text("Robot is powered off.", null, InputHints.IgnoringInput),
+                        cancellationToken
+                    );
+
+                    break;
+
                 case RobotActions.Intent.Move:
                     // Initialize Movement action with any entities we may have found in the response.
                     var move = new Movement()
@@ -68,6 +98,14 @@ namespace Microsoft.Robots.Dialogs
                     var messageText = $"Moving {move.Object} to {move.Destination}";
                     var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(message, cancellationToken);
+                    break;
+
+                case RobotActions.Intent.Help: // Provide help
+                    var helpText = "I can turn on or off, or move something to a destination.";
+                    await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text(helpText, null, InputHints.IgnoringInput),
+                        cancellationToken
+                    );
                     break;
 
                 default:
