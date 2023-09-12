@@ -95,7 +95,7 @@ namespace Microsoft.Robots.Dialogs
 
                     // TODO: Call Robot API
 
-                    var messageText = $"Moving {move.Object} from {move.Origin} to {move.Destination}";
+                    var messageText = $"Moving {move.Object} to {move.Destination}";
                     var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(message, cancellationToken);
                     break;
