@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBotCLU;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -16,13 +17,15 @@ namespace Microsoft.Robots.Dialogs
     {
         private readonly RobotRecognizer _cluRecognizer;
         protected readonly ILogger Logger;
+        private IRobotService _robotService;
 
         // Dependency injection uses this constructor to instantiate MainDialog
-        public MainDialog(RobotRecognizer cluRecognizer, ILogger<MainDialog> logger)
+        public MainDialog(RobotRecognizer cluRecognizer, ILogger<MainDialog> logger, IRobotService robotService)
             : base(nameof(MainDialog))
         {
             _cluRecognizer = cluRecognizer;
             Logger = logger;
+            _robotService = robotService;
 
             AddDialog(new TextPrompt(nameof(TextPrompt)));
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
@@ -60,7 +63,7 @@ namespace Microsoft.Robots.Dialogs
                         cancellationToken
                     );
 
-                    // TODO: Call Robot API
+                    bool isTurnedOn = await _robotService.StartSessionAsync(1);                    
 
                     await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text("Powered on and ready.", null, InputHints.IgnoringInput),
