@@ -18,7 +18,6 @@ namespace Microsoft.Robots
         public enum Intent
         {
             Move,
-            Help,
             TurnOn,
             TurnOff,
             Help,
