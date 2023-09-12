@@ -21,6 +21,7 @@ namespace Microsoft.Robots
             Cancel,
             TurnOn,
             TurnOff,
+            Help,
             None
         }
 
