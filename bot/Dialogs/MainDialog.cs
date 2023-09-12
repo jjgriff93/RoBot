@@ -43,7 +43,7 @@ namespace Microsoft.Robots.Dialogs
                 throw new Exception("CLU is not configured correctly. Exiting.");
             }
 
-            var messageText = stepContext.Options?.ToString() ?? $"What would you like me to do?";
+            var messageText = stepContext.Options?.ToString() ?? $"Hello! What would you like me to do?";
             var promptMessage = MessageFactory.Text(messageText, messageText, InputHints.ExpectingInput);
             return await stepContext.PromptAsync(nameof(TextPrompt), new PromptOptions { Prompt = promptMessage }, cancellationToken);
         }
