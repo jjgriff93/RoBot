@@ -59,13 +59,13 @@ namespace Microsoft.Robots.Dialogs
                     var move = new Movement()
                     {
                         Object = cluResult.Entities.GetObject(),
-                        Origin = cluResult.Entities.GetOrigin(),
+                        //Origin = cluResult.Entities.GetOrigin(),
                         Destination = cluResult.Entities.GetDestination(),
                     };
 
                     // TODO: Call Robot API
 
-                    var messageText = $"Moving {move.Object} from {move.Origin} to {move.Destination}";
+                    var messageText = $"Moving {move.Object} to {move.Destination}";
                     var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(message, cancellationToken);
                     break;
