@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Image",
+      "url": "https://a.storyblok.com/f/169662/1125x1500/d81c866521/png-ur3e_01_r.png/m/fit-in/633x888",
+      "size": "stretch"
+    },
+    {
+      "type": "TextBlock",
+      "spacing": "medium",
+      "size": "default",
+      "weight": "bolder",
+      "text": "Hello, I'm T-1000!",
+      "wrap": true,
+      "maxLines": 0
+    },
+    {
+      "type": "TextBlock",
+      "size": "default",
+      "isSubtle": true,
+      "text": "Please give me a command.",
+      "wrap": true,
+      "maxLines": 0
+    }
+  ],
+  "actions": []
+}

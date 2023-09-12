@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "KpDNC6aBkc4BZsDi1RN4+MtCt1/SFdB++KSiNpbckZ4=",
+  "Source": "CoreBotCLU",
+  "BasePath": "_content/CoreBotCLU",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "CoreBotCLU/wwwroot",
+      "Source": "CoreBotCLU",
+      "ContentRoot": "/Users/griff/Code/Robot Arm IMV Hack 2/bot/wwwroot/",
+      "BasePath": "_content/CoreBotCLU",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/griff/Code/Robot Arm IMV Hack 2/bot/wwwroot/default.htm",
+      "SourceId": "CoreBotCLU",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/griff/Code/Robot Arm IMV Hack 2/bot/wwwroot/",
+      "BasePath": "_content/CoreBotCLU",
+      "RelativePath": "default.htm",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/default.htm"
+    }
+  ]
+}
