@@ -89,7 +89,7 @@ namespace Microsoft.Robots.Dialogs
                     var move = new Movement()
                     {
                         Object = cluResult.Entities.GetObject(),
-                        Origin = cluResult.Entities.GetOrigin(),
+                        //Origin = cluResult.Entities.GetOrigin(),
                         Destination = cluResult.Entities.GetDestination(),
                     };
 
