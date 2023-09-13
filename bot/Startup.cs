@@ -31,10 +31,13 @@ namespace Microsoft.Robots
             services.AddSingleton<IStorage, MemoryStorage>();
 
             // Create the User state. (Used in this bot's Dialog implementation.)
-            services.AddSingleton<UserState>();
+            var storage = new MemoryStorage();
+            var userState = new UserState(storage);
+            services.AddSingleton<UserState>(userState);
 
             // Create the Conversation state. (Used by the Dialog system itself.)
-            services.AddSingleton<ConversationState>();
+            var conversationState = new ConversationState(storage);
+            services.AddSingleton<ConversationState>(conversationState);
 
             // Register CLU recognizer
             services.AddSingleton<RobotRecognizer>();

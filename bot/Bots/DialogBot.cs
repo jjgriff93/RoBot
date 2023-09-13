@@ -44,6 +44,16 @@ namespace Microsoft.Robots.Bots
         {
             Logger.LogInformation("Running dialog with Message Activity.");
 
+            var userStateAccessors = UserState.CreateProperty<RobotState>(nameof(RobotState));
+            var robotState = await userStateAccessors.GetAsync(turnContext, () => new RobotState());
+
+            if (string.IsNullOrEmpty(robotState.ObjectPosition))
+            {
+                // Get the location of the object
+                await turnContext.SendActivityAsync("What position is the object currently in?");
+                robotState.ObjectPosition = turnContext.Activity.Text;
+            }
+
             // Run the Dialog with the new message Activity.
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
         }
