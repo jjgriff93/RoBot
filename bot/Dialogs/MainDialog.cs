@@ -62,7 +62,7 @@ namespace Microsoft.Robots.Dialogs
                         MessageFactory.Text("Turning on...", null, InputHints.IgnoringInput),
                         cancellationToken
                     );
-
+                    //get the RobotId based on the available robots, For now it is hardcoded to available RobotId 1
                     bool isTurnedOn = await _robotService.StartSessionAsync(1);                    
 
                     await stepContext.Context.SendActivityAsync(
@@ -78,7 +78,7 @@ namespace Microsoft.Robots.Dialogs
                         cancellationToken
                     );
 
-                    // TODO: Call Robot API
+                    bool isTurnedOff = await _robotService.StopSessionAsync(1);  
 
                     await stepContext.Context.SendActivityAsync(
                         MessageFactory.Text("Robot is powered off.", null, InputHints.IgnoringInput),
@@ -95,10 +95,10 @@ namespace Microsoft.Robots.Dialogs
                         //Origin = cluResult.Entities.GetOrigin(),
                         Destination = cluResult.Entities.GetDestination(),
                     };
+                    // Call the robot service to move the robot, as of now the destination is not used by API
+                    bool isMoved = await _robotService.MoveRobotAsync(move.Object, move.Destination);
 
-                    // TODO: Call Robot API
-
-                    var messageText = $"Moving {move.Object} to {move.Destination}";
+                    var messageText = $"Moving {move.Object} to {move.Destination} with the isMoved status {isMoved}";
                     var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
                     await stepContext.Context.SendActivityAsync(message, cancellationToken);
                     break;

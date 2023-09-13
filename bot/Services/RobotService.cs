@@ -13,10 +13,18 @@ namespace CoreBotCLU
             _robotServiceUrl =$"{configuration["RobotAPIEndpoint"]}";
             _httpClientService = new HttpClientService(_robotServiceUrl);
         }
-        public Task<string> MoveRobotAsync(string objectToMove, string destination)
+        public async Task<bool> MoveRobotAsync(string objectToMove, string destination)
         {
-
-            throw new System.NotImplementedException();
+             var queryParameters = new Dictionary<string, string>
+             {
+                { "action", "move" }
+             };
+            var response = await  _httpClientService.PutAsync("/robot/move", "", queryParameters);
+            if(response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> StartSessionAsync(int robotId)
@@ -32,12 +40,21 @@ namespace CoreBotCLU
                 return true;
             }   
             return false;
-            
         }
 
-        public Task<string> StopSessionAsync(int robotId)
+        public async Task<bool> StopSessionAsync(int robotId)
         {
-            throw new System.NotImplementedException();
+           // Create a dictionary of query parameters
+            var queryParameters = new Dictionary<string, string>
+             {
+                    { "robotId", robotId.ToString() }
+             };
+            var response = await  _httpClientService.PostAsync("Robot/EndSession", "", queryParameters);
+            if(response.IsSuccessStatusCode)
+            {
+                return true;
+            }   
+            return false;    
         }
     }
 }
