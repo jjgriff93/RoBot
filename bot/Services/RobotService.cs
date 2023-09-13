@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Robots;
+using Newtonsoft.Json;
 
 namespace CoreBotCLU
 {
@@ -27,7 +29,33 @@ namespace CoreBotCLU
             return false;
         }
 
-        public async Task<bool> StartSessionAsync(int robotId)
+        public async Task<bool> MoveRobotbyIDAsync(string robotId, string key, string objectToMove, string destination)
+        {
+             var queryParameters = new Dictionary<string, string>
+             {
+                { "key", key }
+             };
+              var data = new MoveCommand
+                {
+                    x = -1,
+                    y = 0,
+                    z = 0,
+                    rx = 0,
+                    ry = 0,
+                    rz = 0,
+                    velocity = 0.2,
+                    acceleration = 0.2
+                };
+            string jsonData = JsonConvert.SerializeObject(data);
+            var response = await  _httpClientService.PutAsync($"/robot/{robotId}/move", jsonData, queryParameters);
+            if(response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> StartSessionAsync(string robotId)
         {
             // Create a dictionary of query parameters
             var queryParameters = new Dictionary<string, string>
@@ -42,7 +70,7 @@ namespace CoreBotCLU
             return false;
         }
 
-        public async Task<bool> StopSessionAsync(int robotId)
+        public async Task<bool> StopSessionAsync(string robotId)
         {
            // Create a dictionary of query parameters
             var queryParameters = new Dictionary<string, string>
@@ -55,6 +83,33 @@ namespace CoreBotCLU
                 return true;
             }   
             return false;    
+        }
+
+        public async Task<List<Robot>> GetAvailableRobotsAsync()
+        {
+            var response = await  _httpClientService.GetAsync("/robot");
+            
+            //Check if the response is null or empty
+            if(!string.IsNullOrEmpty(response))
+            {
+                List<Robot> robots = JsonConvert.DeserializeObject<List<Robot>>(response);
+                return robots;
+            }
+            return null;    
+        }
+
+        public async Task<bool> GetRobotHeartbeatAsync(string robotId, string key)
+        {
+            var queryParameters = new Dictionary<string, string>
+             {
+                    { "robotId", robotId },
+                    { "key", key}
+             };
+             var response = await  _httpClientService.PostAsync("Robot/HeartBeat", "", queryParameters);
+            if(response.IsSuccessStatusCode){
+                return true;
+            }
+            return false;
         }
     }
 }
