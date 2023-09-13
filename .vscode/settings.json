@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/543c2754-70f6-40fd-8b89-b779f90a94ed/resourceGroups/robot-IMV-hack-2/providers/Microsoft.Web/sites/t1000robot",
+    "appService.deploySubpath": "bot/bin/Publish"
+}
