@@ -8,14 +8,6 @@ using Microsoft.CognitiveServices.Speech.Dialog;
 namespace Microsoft.Robots.Speech {
     class Program
     {
-        private static DialogServiceConnector dialogConnector;
-
-        async static Task Listen()
-        {
-            Console.WriteLine("Listening...");
-            await dialogConnector.ListenOnceAsync();
-        }
-
         async static Task Main(string[] args)
         {
             var speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY");
@@ -29,7 +21,7 @@ namespace Microsoft.Robots.Speech {
             var audioConfig = AudioConfig.FromDefaultMicrophoneInput();
 
             // Initialise the dialog service connector to connect to the bot
-            dialogConnector = await DialogService.InitializeConnector(speechKey, audioConfig);
+            var dialogConnector = await DialogService.InitializeConnector(speechKey, audioConfig, "eastus");
 
             Console.WriteLine("Press Enter then say your command (or Esc to quit)...");
 
@@ -42,7 +34,7 @@ namespace Microsoft.Robots.Speech {
                 switch (key.Key)
                 {
                     case ConsoleKey.Enter:
-                        await Listen();
+                        await dialogConnector.ListenOnceAsync();
                         break;
                     case ConsoleKey.Escape:
                         return;
