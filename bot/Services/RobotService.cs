@@ -9,11 +9,15 @@ namespace CoreBotCLU
     public class RobotService : IRobotService
     {
         private readonly string _robotServiceUrl;
+        private readonly string _robotMultiMoveServiceUrl;
         private HttpClientService _httpClientService;
+        private HttpClientService _httpClientService2;
         public RobotService(IConfiguration configuration)
         {
             _robotServiceUrl =$"{configuration["RobotAPIEndpoint"]}";
+            _robotMultiMoveServiceUrl = $"{configuration["RobotMultiMoveEndpoint"]}";
             _httpClientService = new HttpClientService(_robotServiceUrl);
+            _httpClientService2 = new HttpClientService(_robotMultiMoveServiceUrl);
         }
         public async Task<bool> MoveRobotAsync(string objectToMove, string destination)
         {
@@ -49,6 +53,21 @@ namespace CoreBotCLU
             string jsonData = JsonConvert.SerializeObject(data);
             var response = await  _httpClientService.PutAsync($"/robot/{robotId}/move", jsonData, queryParameters);
             if(response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> MultiMoveRobotAsync(string robotId, string key, string moveCommand)
+        {
+            var queryParameters = new Dictionary<string, string>
+             {
+                { "key", key },
+                { "moveCommand", moveCommand }
+             };
+            var response = await _httpClientService2.PutAsync($"/robot/{robotId}/multimove", "", queryParameters);
+            if (response.IsSuccessStatusCode)
             {
                 return true;
             }

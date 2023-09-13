@@ -54,6 +54,7 @@ namespace Microsoft.Robots.Dialogs
 
         private async Task<DialogTurnResult> ActStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
+            string errorMessage = string.Empty;
             //Check for available robots    
             var availableRobots = await _robotService.GetAvailableRobotsAsync();  
             // find the robot heartbeat
@@ -61,7 +62,7 @@ namespace Microsoft.Robots.Dialogs
             var isRobotActive = await _robotService.GetRobotHeartbeatAsync(robotId:robotDetails.Id.ToString(),key:robotDetails.Key.ToString());
             string robotId = robotDetails.Id.ToString();
             if (availableRobots.Count != 0 && isRobotActive)
-            {
+            {             
                 // Call CLU
                 var cluResult = await _cluRecognizer.RecognizeAsync<RobotActions>(stepContext.Context, cancellationToken);                                 
                 switch (cluResult.GetTopIntent().intent)
@@ -97,6 +98,7 @@ namespace Microsoft.Robots.Dialogs
                         break;
 
                     case RobotActions.Intent.Move:
+                        bool isMoved;
                         // Initialize Movement action with any entities we may have found in the response.
                         var move = new Movement()
                         {
@@ -104,11 +106,25 @@ namespace Microsoft.Robots.Dialogs
                             Destination = cluResult.Entities.GetDestination(),
                         };
                         // Call the robot service to move the robot, decide which method to call based on the robotId
-                        bool isMoved = await _robotService.MoveRobotAsync(move.Object, move.Destination);
+                        //option 1
+                        //bool isMoved = await _robotService.MoveRobotAsync(move.Object, move.Destination);
+                        //option 2
                         //bool isMoved = await _robotService.MoveRobotbyIDAsync(robotId,
                         //              robotDetails.Key.ToString(), move.Object, move.Destination);
-
-                        var messageText = isMoved ? $"Moving {move.Object} to {move.Destination}": "Moving Robot Failed, please try again";
+                        //option 3
+                        
+                        var moveCommand =!string.IsNullOrEmpty(move.Destination)? move.Destination.Contains("Cold") ? "HotToCold" : "ColdToHot":"";
+                        if (!string.IsNullOrEmpty(moveCommand))
+                        {
+                            isMoved = await _robotService.MultiMoveRobotAsync(robotId, "1", moveCommand);
+                            if (!isMoved) 
+                                { errorMessage = "Moving Robot Failed, please try again";}
+                        }
+                        else {
+                            isMoved = false;
+                            errorMessage = "Unable to determine the destination";
+                        }
+                        var messageText = isMoved ? $"Moving {move.Object} to {move.Destination}": errorMessage ;
                         var message = MessageFactory.Text(messageText, messageText, InputHints.IgnoringInput);
                         await stepContext.Context.SendActivityAsync(message, cancellationToken);
                         break;

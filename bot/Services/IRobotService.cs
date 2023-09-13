@@ -11,8 +11,9 @@ namespace CoreBotCLU
         Task<bool> StopSessionAsync(string robotId);
         Task<List<Robot>> GetAvailableRobotsAsync();
         Task<bool> MoveRobotbyIDAsync(string robotId, string key, string objectToMove, string destination);
-        Task<bool> GetRobotHeartbeatAsync(string robotId, string key); 
+        Task<bool> GetRobotHeartbeatAsync(string robotId, string key);
+        Task<bool> MultiMoveRobotAsync(string robotId, string key, string moveCommand);
 
-    
+
     }
 }
