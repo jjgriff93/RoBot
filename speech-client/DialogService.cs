@@ -6,11 +6,13 @@ using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech.Dialog;
 using ManagedBass;
+using System.Threading;
 
 namespace Microsoft.Robots.Speech
 {
     public static class DialogService
     {
+        private static int currentAudioChannel;
         public static async Task<DialogServiceConnector> InitializeConnector(string speechSubscriptionKey, AudioConfig audioConfig, string region = "eastus")
         {
             var botConfig = BotFrameworkConfig.FromSubscription(speechSubscriptionKey, region);
@@ -29,7 +31,7 @@ namespace Microsoft.Robots.Speech
                 if (activityReceivedEventArgs.HasAudio)
                 {
                     Console.WriteLine("Activity has audio");
-                    PlayActivityAudio(activityReceivedEventArgs.Audio);
+                    await PlayActivityAudio(activityReceivedEventArgs.Audio);
                 }
             };
             // Canceled will be signaled when a turn is aborted or experiences an error condition
@@ -66,7 +68,7 @@ namespace Microsoft.Robots.Speech
             return connector;
         }
 
-        private static void PlayActivityAudio(PullAudioOutputStream activityAudio)
+        private static async Task PlayActivityAudio(PullAudioOutputStream activityAudio)
         {
             var playbackStreamWithHeader = new MemoryStream();
             playbackStreamWithHeader.Write(Encoding.ASCII.GetBytes("RIFF"), 0, 4); // ChunkID
@@ -100,16 +102,21 @@ namespace Microsoft.Robots.Speech
             // Create a new Bass Stream
             int stream = Bass.CreateStream(audioData, 0, audioData.Length, BassFlags.Default);
 
-            if (stream != 0)
-            {
-                var result = Bass.ChannelPlay(stream); // Play the stream
-                Console.WriteLine($"Bass.ChannelPlay result: {result}");
-            }
-            // Error creating the stream
-            else
+            if (stream == 0) // Error creating the stream
             {
                 Console.WriteLine("Error creating the stream: {0}!", Bass.LastError);
             }
+
+            // Wait for the stream to finish playing
+            while (Bass.ChannelIsActive(currentAudioChannel) == PlaybackState.Playing)
+            {
+                Console.WriteLine($"Currently playing so waiting for stream to finish...");
+                Thread.Sleep(1000); // Wait for a short period of time before checking again
+            }
+
+            currentAudioChannel = stream; // Set the current audio channel to the new stream
+            var result = Bass.ChannelPlay(stream); // Play the stream
+            Console.WriteLine($"Bass.ChannelPlay result: {result}");
         }
     }
 }
