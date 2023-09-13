@@ -30,7 +30,6 @@ namespace Microsoft.Robots.Speech
 
                 if (activityReceivedEventArgs.HasAudio)
                 {
-                    Console.WriteLine("Activity has audio");
                     await PlayActivityAudio(activityReceivedEventArgs.Audio);
                 }
             };
@@ -110,13 +109,11 @@ namespace Microsoft.Robots.Speech
             // Wait for the stream to finish playing
             while (Bass.ChannelIsActive(currentAudioChannel) == PlaybackState.Playing)
             {
-                Console.WriteLine($"Currently playing so waiting for stream to finish...");
                 Thread.Sleep(1000); // Wait for a short period of time before checking again
             }
 
             currentAudioChannel = stream; // Set the current audio channel to the new stream
             var result = Bass.ChannelPlay(stream); // Play the stream
-            Console.WriteLine($"Bass.ChannelPlay result: {result}");
         }
     }
 }
