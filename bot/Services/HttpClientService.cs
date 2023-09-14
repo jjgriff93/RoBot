@@ -60,6 +60,17 @@ namespace CoreBotCLU
 
         return null; // Handle error cases as needed
     }
+    public async Task<string> GetAsync(string requestUri)
+    {
+        HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        return null;
+    }
 
         private string GetQueryParameters(string requestUri,Dictionary<string, string> queryParameters)
         {

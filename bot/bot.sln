@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBotCLU", "CoreBotCLU.csproj", "{8208CFFB-8BE6-4888-AA50-68A077D0DC6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8208CFFB-8BE6-4888-AA50-68A077D0DC6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8208CFFB-8BE6-4888-AA50-68A077D0DC6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8208CFFB-8BE6-4888-AA50-68A077D0DC6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8208CFFB-8BE6-4888-AA50-68A077D0DC6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F9F4645-C0C2-4261-83F8-DD41FC77E4AD}
+	EndGlobalSection
+EndGlobal
